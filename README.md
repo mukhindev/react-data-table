@@ -27,7 +27,7 @@ All you need is to define the columns
 
 ## Example
 
-![table example](./docs/attachments/example.png)
+![table example](https://raw.githubusercontent.com/mukhindev/react-data-table/main/docs/attachments/example.png)
 
 ```CSS
 /* MyComponent.module.css */
