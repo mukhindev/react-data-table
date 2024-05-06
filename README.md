@@ -7,6 +7,12 @@ Data-driven React table
 
 Demo: https://github.com/mukhindev/react-data-table-demo
 
+## Install
+
+```
+npm install @mukhindev/react-data-table
+```
+
 ## Without virtualization
 
 This table without virtualization.
