@@ -1,0 +1,26 @@
+.DataTable {
+  --font-size: 14px;
+  --color-primary: #000;
+  --color-border: #ccc;
+  --padding-vertical: 8px;
+  --padding-horizontal: 12px;
+
+  overflow-x: auto;
+  font-size: var(--font-size);
+}
+
+.Table {
+  table-layout: auto;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.HeadCell {
+  padding: var(--padding-vertical) var(--padding-horizontal);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.BodyCell {
+  padding: var(--padding-vertical) var(--padding-horizontal);
+  border-bottom: 1px solid var(--color-border);
+}
