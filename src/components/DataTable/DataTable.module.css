@@ -14,13 +14,3 @@
   border-collapse: collapse;
   width: 100%;
 }
-
-.HeadCell {
-  padding: var(--padding-vertical) var(--padding-horizontal);
-  border-bottom: 2px solid var(--color-primary);
-}
-
-.BodyCell {
-  padding: var(--padding-vertical) var(--padding-horizontal);
-  border-bottom: 1px solid var(--color-border);
-}

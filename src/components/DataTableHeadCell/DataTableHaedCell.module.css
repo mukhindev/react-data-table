@@ -1,0 +1,4 @@
+.HeadCell {
+  padding: var(--padding-vertical) var(--padding-horizontal);
+  border-bottom: 2px solid var(--color-primary);
+}
