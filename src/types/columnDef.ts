@@ -1,24 +1,26 @@
 import { HTMLAttributes, ReactNode } from "react";
 
 /** Определение колонок таблицы */
-export interface BaseColumnDef {
+export interface BaseColumnDef<ExtraCellProps = object> {
   title?: ReactNode;
-  cellProps?: HTMLAttributes<HTMLTableCellElement>;
-  headCellProps?: HTMLAttributes<HTMLTableCellElement>;
-  bodyCellProps?: HTMLAttributes<HTMLTableCellElement>;
+  cellProps?: HTMLAttributes<HTMLTableCellElement> & ExtraCellProps;
+  headCellProps?: HTMLAttributes<HTMLTableCellElement> & ExtraCellProps;
+  bodyCellProps?: HTMLAttributes<HTMLTableCellElement> & ExtraCellProps;
 }
 
-interface ColumnDefRenderValue<T> extends BaseColumnDef {
+interface ColumnDefRenderValue<T, C = object> extends BaseColumnDef<C> {
   valueKey: ObjectDotNotation<T>;
   render?: undefined;
 }
 
-interface ColumnDefRenderCustom<T> extends BaseColumnDef {
+interface ColumnDefRenderCustom<T, C = object> extends BaseColumnDef<C> {
   valueKey?: undefined;
   render: (item: T, index: number) => ReactNode;
 }
 
-export type ColumnDef<T> = ColumnDefRenderValue<T> | ColumnDefRenderCustom<T>;
+export type ColumnDef<T, C = object> =
+  | ColumnDefRenderValue<T, C>
+  | ColumnDefRenderCustom<T, C>;
 
 type BreakDownObject<O, R = void> = {
   [K in keyof O as string]: K extends string

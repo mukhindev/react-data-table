@@ -1,4 +1,10 @@
-import { ForwardedRef, HTMLAttributes, ReactNode, forwardRef } from "react";
+import {
+  ForwardedRef,
+  HTMLAttributes,
+  ReactNode,
+  forwardRef,
+  ReactElement,
+} from "react";
 import styles from "./DataTable.module.css";
 import { ColumnDef } from "../../types";
 
@@ -8,6 +14,11 @@ interface DataTableProps<T> extends HTMLAttributes<HTMLDivElement> {
   defs: ColumnDef<T>[];
   /** Массив данных для вывода. Каждый элемент — строка */
   data: T[];
+  table?: ReactElement;
+  thead?: ReactElement;
+  tbody?: ReactElement;
+  tr?: ReactElement;
+  td?: ReactElement;
 }
 
 /** Генерация таблицы из данных */
@@ -20,12 +31,22 @@ export default forwardRef(function DataTable<T>(
     data = [],
     defs = [],
     className,
+    table,
+    thead,
+    tbody,
+    tr,
+    td,
     ...divProps
   } = props;
 
   if (!data || !defs) {
     return null;
   }
+
+  const Table = table?.type ?? "table";
+  const TableHead = thead?.type ?? "thead";
+  const TableBody = tbody?.type ?? "tbody";
+  const TableRow = tr?.type ?? "tr";
 
   return (
     <div
@@ -36,18 +57,18 @@ export default forwardRef(function DataTable<T>(
       className={[styles.DataTable, className].filter((el) => el).join(" ")}
       ref={ref}
     >
-      <table className={styles.Table}>
-        <thead>
-          <tr>
+      <Table className={styles.Table} {...table?.props}>
+        <TableHead {...thead?.props}>
+          <TableRow {...tr?.props}>
             {defs.map((def, defIndex) => {
-              return <DataTableHeadCell key={defIndex} def={def} />;
+              return <DataTableHeadCell key={defIndex} def={def} td={td} />;
             })}
-          </tr>
-        </thead>
-        <tbody>
+          </TableRow>
+        </TableHead>
+        <TableBody {...tbody?.props}>
           {data.map((item, dataIndex) => {
             return (
-              <tr key={dataIndex}>
+              <TableRow key={dataIndex} {...tr?.props}>
                 {defs.map((def, defIndex) => {
                   return (
                     <DataTableBodyCell
@@ -55,14 +76,15 @@ export default forwardRef(function DataTable<T>(
                       def={def}
                       index={dataIndex}
                       item={item}
+                      td={td}
                     />
                   );
                 })}
-              </tr>
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 });
@@ -71,9 +93,11 @@ interface DataTableHeadCellProps<T>
   extends HTMLAttributes<HTMLTableCellElement> {
   /** Определение колонки (свойства колонки) */
   def: ColumnDef<T>;
+  td?: ReactElement;
 }
+
 function DataTableHeadCell<T>(props: DataTableHeadCellProps<T>) {
-  const { def, className } = props;
+  const { def, className, td } = props;
   const {
     "data-component": dataComponent,
     className: defClassName,
@@ -87,8 +111,10 @@ function DataTableHeadCell<T>(props: DataTableHeadCellProps<T>) {
       .join(" "),
   };
 
+  const TableCell = td?.type ?? "td";
+
   return (
-    <td
+    <TableCell
       data-component={
         dataComponent
           ? `DataTableHeadCell/${dataComponent}`
@@ -97,10 +123,11 @@ function DataTableHeadCell<T>(props: DataTableHeadCellProps<T>) {
       className={[styles.HeadCell, className, defClassName]
         .filter((el) => el)
         .join(" ")}
+      {...td?.props}
       {...cellProps}
     >
       {def.title ?? (def.valueKey as string)}
-    </td>
+    </TableCell>
   );
 }
 
@@ -111,10 +138,11 @@ interface DataTableBodyCellProps<T>
   /** Данные строки таблицы */
   item: T;
   index: number;
+  td?: ReactElement;
 }
 
 function DataTableBodyCell<T>(props: DataTableBodyCellProps<T>) {
-  const { def, item, index, className } = props;
+  const { def, item, index, className, td } = props;
 
   const withTdWrapperElement = (element: ReactNode) => {
     const {
@@ -130,8 +158,10 @@ function DataTableBodyCell<T>(props: DataTableBodyCellProps<T>) {
         .join(" "),
     };
 
+    const TableCell = td?.type ?? "td";
+
     return (
-      <td
+      <TableCell
         data-component={
           dataComponent
             ? `DataTableBodyCell/${dataComponent}`
@@ -140,10 +170,11 @@ function DataTableBodyCell<T>(props: DataTableBodyCellProps<T>) {
         className={[styles.BodyCell, className, defClassName]
           .filter((el) => el)
           .join(" ")}
+        {...td?.props}
         {...cellProps}
       >
         {element}
-      </td>
+      </TableCell>
     );
   };
 

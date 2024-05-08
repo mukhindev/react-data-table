@@ -122,3 +122,71 @@ function MyComponent() {
   return <DataTable data={data} defs={defs} />;
 }
 ```
+
+## Styles with Material UI (MUI)
+
+https://mui.com/material-ui
+
+```TypeScript
+import DataTable, { ColumnDef } from "@mukhindev/react-data-table";
+import { Table, TableHead, TableBody, TableRow, TableCell, TableCellProps } from "@mui/material";
+
+type ProductModel = {
+  id: number;
+  name: string;
+};
+
+type OrderItemModel = {
+  id: number;
+  product: ProductModel;
+  price: number;
+};
+
+
+export default function TableWithMui() {
+  const data: OrderItemModel[] = [
+    { id: 1, product: { id: 7, name: "Potato" }, price: 10000 },
+    { id: 2, product: { id: 5, name: "Banana" }, price: 32000 },
+    { id: 3, product: { id: 9, name: "Orange" }, price: 42500 },
+  ];
+
+  //                                   CellProps from Mui
+  //                                           ↓           
+  const defs: ColumnDef<OrderItemModel, TableCellProps>[] = [
+    {
+      title: "ID",
+      valueKey: "id",
+    },
+    {
+      title: "Product",
+      valueKey: "product.name",
+    },
+    {
+      title: "Price",
+      render: (item) => `${item.price.toLocaleString("ru")} ₽`,
+      cellProps: {  
+        style: { textAlign: "right" },
+        sx: { backgroundColor: "red" }, // ← TableCellProps
+      },
+    },
+    {
+      title: "Random",
+      render: () => Math.random().toFixed(3),
+      headCellProps: { sx: {} },
+      bodyCellProps: { sx: {} },
+    },
+  ];
+
+  return (
+    <DataTable
+      data={data}
+      defs={defs}
+      table={<Table />}
+      thead={<TableHead />}
+      tbody={<TableBody />}
+      tr={<TableRow />}
+      td={<TableCell sx={{ backgroundColor: "seagreen" }} />}
+    />
+  );
+}
+```
