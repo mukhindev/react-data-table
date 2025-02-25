@@ -23,7 +23,7 @@
     }
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "rimraf ./dist && npx tsc && node ./transfer.js",
     "link": "npm link"
   },
   "peerDependencies": {
@@ -31,12 +31,10 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
-    "rollup": "^4.17.2",
-    "tslib": "^2.6.2",
+    "rimraf": "^5.0.5",
     "typescript": "^5.2.2"
   }
 }

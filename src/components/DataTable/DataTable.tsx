@@ -1,5 +1,5 @@
 import { ForwardedRef, HTMLAttributes, forwardRef, ReactElement } from "react";
-import { ColumnDef } from "../../types";
+import { ColumnDef, FilterDef } from "../../types";
 import DataTableBodyCell from "../DataTableBodyCell";
 import DataTableHeadCell from "../DataTableHeadCell";
 import styles from "./DataTable.module.css";
@@ -10,11 +10,20 @@ interface DataTableProps<T> extends HTMLAttributes<HTMLDivElement> {
   defs: ColumnDef<T>[];
   /** Массив данных для вывода. Каждый элемент — строка */
   data: T[];
+
   table?: ReactElement;
   thead?: ReactElement;
   tbody?: ReactElement;
   tr?: ReactElement;
   td?: ReactElement;
+
+  /** Сортировка таблицы */
+  sort?: string;
+  /** Фильтр таблицы */
+  filter?: FilterDef;
+  /** Отображение шапки таблицы (по-умолчанию true) */
+  onSort?: (sort?: string) => void;
+  onFilter?: (filter: FilterDef) => void;
 }
 
 /** Генерация таблицы из данных */
@@ -32,8 +41,14 @@ export default forwardRef(function DataTable<T>(
     tbody,
     tr,
     td,
+    sort,
+    filter,
+    onSort,
+    onFilter,
     ...divProps
   } = props;
+
+  const filterCount = Object.values(filter ?? {}).filter((el) => el).length;
 
   if (!data || !defs) {
     return null;
@@ -50,14 +65,30 @@ export default forwardRef(function DataTable<T>(
       data-component={
         dataComponent ? `DataTable/${dataComponent}` : "DataTable"
       }
-      className={[styles.DataTable, className].filter((el) => el).join(" ")}
+      className={[styles.root, className].filter((el) => el).join(" ")}
       ref={ref}
     >
-      <Table className={styles.Table} {...table?.props}>
+      {filter && (
+        <>
+          Фильтров: {filterCount}
+          <button onClick={() => onFilter?.({})}>Очистить фильтры</button>
+        </>
+      )}
+      <Table className={styles.__table} {...table?.props}>
         <TableHead {...thead?.props}>
           <TableRow {...tr?.props}>
             {defs.map((def, defIndex) => {
-              return <DataTableHeadCell key={defIndex} def={def} td={td} />;
+              return (
+                <DataTableHeadCell
+                  key={defIndex}
+                  def={def}
+                  td={td}
+                  sort={sort}
+                  filter={filter}
+                  onSort={onSort}
+                  onFilter={onFilter}
+                />
+              );
             })}
           </TableRow>
         </TableHead>

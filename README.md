@@ -2,12 +2,11 @@
 
 Data-driven React table
 
-> [!NOTE]  
-> Dependencies: Need support for CSS modules in your configuration
-
 Demo: https://github.com/mukhindev/react-data-table-demo
 
 ## Install
+
+⚠️ Dependencies: Need support for CSS modules in your configuration. 
 
 ```
 npm install @mukhindev/react-data-table
@@ -18,6 +17,10 @@ npm install @mukhindev/react-data-table
 This table without virtualization.
 So using this table with big data is a bad idea.
 Check out [AG-Grid](https://www.ag-grid.com/), [TanStack Table](https://tanstack.com/table/latest) and the same projects.
+
+## CSS Modules
+
+Package components use the CSS modules without pre-processing, so you can process them to suit your build. Vite and Next.js support CSS modules.
 
 ## Data-driven
 

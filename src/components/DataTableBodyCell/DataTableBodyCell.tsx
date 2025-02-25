@@ -38,7 +38,7 @@ export default function DataTableBodyCell<T>(props: DataTableBodyCellProps<T>) {
             ? `DataTableBodyCell/${dataComponent}`
             : "DataTableBodyCell"
         }
-        className={[styles.BodyCell, className, defClassName]
+        className={[styles.root, className, defClassName]
           .filter((el) => el)
           .join(" ")}
         {...td?.props}

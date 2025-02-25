@@ -1,4 +1,4 @@
-.DataTable {
+.root {
   --font-size: 14px;
   --color-primary: #000;
   --color-border: #ccc;
@@ -9,7 +9,7 @@
   font-size: var(--font-size);
 }
 
-.Table {
+.__table {
   table-layout: auto;
   border-collapse: collapse;
   width: 100%;

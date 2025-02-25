@@ -1,4 +1,5 @@
 import { HTMLAttributes, ReactNode } from "react";
+import { RenderFilter } from "./filter";
 
 /** Определение колонок таблицы */
 export interface BaseColumnDef<ExtraCellProps = object> {
@@ -6,6 +7,12 @@ export interface BaseColumnDef<ExtraCellProps = object> {
   cellProps?: HTMLAttributes<HTMLTableCellElement> & ExtraCellProps;
   headCellProps?: HTMLAttributes<HTMLTableCellElement> & ExtraCellProps;
   bodyCellProps?: HTMLAttributes<HTMLTableCellElement> & ExtraCellProps;
+  // Сортировка. При true используется поле как ключ сортировки. Либо строкой кастомный ключ сортировки.
+  sort?: true | string;
+  // Фильтр. Указывается ключ фильтра (например: search[name])
+  filterKey?: string;
+  // Кастомный фильтр через render props
+  renderFilter?: RenderFilter;
 }
 
 interface ColumnDefRenderValue<T, C = object> extends BaseColumnDef<C> {
